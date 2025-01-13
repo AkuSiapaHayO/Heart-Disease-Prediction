@@ -98,3 +98,17 @@ button:hover {
     border-color: #F44336;
     color: #F44336;
 }
+
+.form-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.form-section .form-group {
+    flex: 1 1 calc(50% - 20px);
+}
+
+.form-section .form-group.full {
+    flex: 1 1 100%;
+}

@@ -25,136 +25,125 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
         weightInKilograms: parseFloat(document.getElementById('weightInKilograms').value)
     };
 
-    // Validate input data
-    for (const [key, value] of Object.entries(fullInputData)) {
-        if (isNaN(value)) {
-            alert(`Invalid input for ${key}. Please provide a valid value.`);
-            return;
-        }
-    }
+    // Data subsets for each disease
+    const heartAttackInput = [
+        fullInputData.hadArthritis,
+        fullInputData.physicalHealthDays,
+        // results.angina, // Use Angina prediction
+        // results.stroke, // Use Stroke prediction
+        fullInputData.chestScan,
+        fullInputData.hadDiabetes,
+        fullInputData.ageCategory,
+        fullInputData.difficultyWalking,
+        fullInputData.smokerStatus,
+        fullInputData.removedTeeth
+    ];
 
-    console.log("Full Input Data:", fullInputData);
+    const anginaInput = [
+        fullInputData.ageCategory,
+        fullInputData.bmi,
+        fullInputData.chestScan,
+        fullInputData.deafOrHardOfHearing,
+        fullInputData.difficultyWalking,
+        fullInputData.generalHealth,
+        fullInputData.hadArthritis,
+        fullInputData.hadCOPD,
+        fullInputData.hadDiabetes,
+        fullInputData.hadKidneyDisease,
+        fullInputData.heightInMeters,
+        fullInputData.mentalHealthDays,
+        fullInputData.physicalHealthDays,
+        fullInputData.pneumoVaxEver,
+        fullInputData.removedTeeth,
+        fullInputData.sleepHours,
+        fullInputData.smokerStatus,
+        fullInputData.weightInKilograms
+    ];
 
+    const strokeInput = [
+        fullInputData.ageCategory,
+        fullInputData.bmi,
+        fullInputData.chestScan,
+        fullInputData.difficultyWalking,
+        fullInputData.generalHealth,
+        // results.angina, // Use Angina prediction
+        fullInputData.hadArthritis,
+        fullInputData.hadCOPD,
+        fullInputData.hadDiabetes,
+        fullInputData.heightInMeters,
+        fullInputData.mentalHealthDays,
+        fullInputData.physicalHealthDays,
+        fullInputData.removedTeeth,
+        fullInputData.sleepHours,
+        fullInputData.smokerStatus,
+        fullInputData.weightInKilograms
+    ];
+
+    // Endpoints for each disease
+    const endpoints = {
+        angina: { url: 'http://127.0.0.1:5000/predict/angina', input: anginaInput },
+        stroke: { url: 'http://127.0.0.1:5000/predict/stroke', input: strokeInput },
+        heartAttack: { url: 'http://127.0.0.1:5000/predict/heartattack', input: heartAttackInput },
+    };
+
+    // Initialize the results container
     const resultDiv = document.getElementById('result');
-    resultDiv.className = ''; // Reset styling
+    resultDiv.className = ''; // Reset any previous styling
     resultDiv.textContent = 'Loading...';
-    resultDiv.style.display = 'block'; // Make result container visible
+    resultDiv.style.display = 'block'; // Make the result container visible
 
     let results = {};
+    let prevPrediction = { angina: 0, stroke: 0 };
 
     try {
-        // Step 1: Predict Angina
-        const anginaInput = [
-            fullInputData.ageCategory,
-            fullInputData.bmi,
-            fullInputData.chestScan,
-            fullInputData.deafOrHardOfHearing,
-            fullInputData.difficultyWalking,
-            fullInputData.generalHealth,
-            fullInputData.hadArthritis,
-            fullInputData.hadCOPD,
-            fullInputData.hadDiabetes,
-            fullInputData.hadKidneyDisease,
-            fullInputData.heightInMeters,
-            fullInputData.mentalHealthDays,
-            fullInputData.physicalHealthDays,
-            fullInputData.pneumoVaxEver,
-            fullInputData.removedTeeth,
-            fullInputData.sleepHours,
-            fullInputData.smokerStatus,
-            fullInputData.weightInKilograms
-        ];
+        // Fetch predictions for each disease
+        for (let [disease, { url, input }] of Object.entries(endpoints)) {
+            // Add previous prediction if applicable
+            if (disease === 'stroke') {
+                input.push(prevPrediction.angina); // Add HadAngina to stroke input
+            } else if (disease === 'heartAttack') {
+                input.push(prevPrediction.stroke); // Add HadStroke to heartAttack input
+            }
 
-        console.log("Angina Input:", anginaInput);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ input })
+            });
 
-        const anginaResponse = await fetch('http://127.0.0.1:5000/predict/angina', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ input: anginaInput })
-        });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch prediction for ${disease}`);
+            }
 
-        if (!anginaResponse.ok) throw new Error("Failed to fetch Angina prediction");
+            const result = await response.json();
+            console.log(`Response for ${disease}:`, result); // Debugging log
 
-        const anginaResult = await anginaResponse.json();
-        console.log("Angina Prediction:", anginaResult);
+            if (result.error) {
+                throw new Error(result.error);
+            }
 
-        if (anginaResult.error) throw new Error(anginaResult.error);
-        results.angina = parseFloat(anginaResult.probability.replace('%', ''));
+            // Save the prediction probability
+            results[disease] = result.probability; // Expecting 'probability' from the backend
 
-        // Step 2: Predict Stroke
-        const strokeInput = [
-            fullInputData.ageCategory,
-            fullInputData.bmi,
-            fullInputData.chestScan,
-            fullInputData.difficultyWalking,
-            fullInputData.generalHealth,
-            results.angina, // Use Angina prediction
-            fullInputData.hadArthritis,
-            fullInputData.hadCOPD,
-            fullInputData.hadDiabetes,
-            fullInputData.heightInMeters,
-            fullInputData.mentalHealthDays,
-            fullInputData.physicalHealthDays,
-            fullInputData.removedTeeth,
-            fullInputData.sleepHours,
-            fullInputData.smokerStatus,
-            fullInputData.weightInKilograms
-        ];
+            // Update previous prediction based on the result
+            if (disease === 'angina') {
+                prevPrediction.angina = result.probability > 50 ? 1 : 0; // Save for stroke
+            } else if (disease === 'stroke') {
+                prevPrediction.stroke = result.probability > 50 ? 1 : 0; // Save for heartAttack
+            }
+        }
 
-        console.log("Stroke Input:", strokeInput);
+        // Update the result div with success styling
+        const queryString = new URLSearchParams({
+            name: fullInputData.name,
+            heartAttack: results.heartAttack,
+            angina: results.angina,
+            stroke: results.stroke
+        }).toString();
 
-        const strokeResponse = await fetch('http://127.0.0.1:5000/predict/stroke', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ input: strokeInput })
-        });
-
-        if (!strokeResponse.ok) throw new Error("Failed to fetch Stroke prediction");
-
-        const strokeResult = await strokeResponse.json();
-        console.log("Stroke Prediction:", strokeResult);
-
-        if (strokeResult.error) throw new Error(strokeResult.error);
-        results.stroke = parseFloat(strokeResult.probability.replace('%', ''));
-
-        // Step 3: Predict Heart Attack
-        const heartAttackInput = [
-            fullInputData.hadArthritis,
-            fullInputData.physicalHealthDays,
-            results.angina, // Use Angina prediction
-            results.stroke, // Use Stroke prediction
-            fullInputData.chestScan,
-            fullInputData.hadDiabetes,
-            fullInputData.ageCategory,
-            fullInputData.difficultyWalking,
-            fullInputData.smokerStatus,
-            fullInputData.removedTeeth
-        ];
-
-        console.log("Heart Attack Input:", heartAttackInput);
-
-        const heartAttackResponse = await fetch('http://127.0.0.1:5000/predict/heartattack', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ input: heartAttackInput })
-        });
-
-        if (!heartAttackResponse.ok) throw new Error("Failed to fetch Heart Attack prediction");
-
-        const heartAttackResult = await heartAttackResponse.json();
-        console.log("Heart Attack Prediction:", heartAttackResult);
-
-        if (heartAttackResult.error) throw new Error(heartAttackResult.error);
-        results.heartAttack = parseFloat(heartAttackResult.probability.replace('%', ''));
-
-        // Display results
-        resultDiv.innerHTML = `
-            <strong>Angina Prediction:</strong> ${results.angina.toFixed(2)}%<br>
-            <strong>Stroke Prediction:</strong> ${results.stroke.toFixed(2)}%<br>
-            <strong>Heart Attack Prediction:</strong> ${results.heartAttack.toFixed(2)}%
-        `;
+        window.location.href = `result.html?${queryString}`;
     } catch (error) {
-        console.error("Error during prediction:", error);
+        // Update the result div with error styling
         resultDiv.classList.add('error');
         resultDiv.textContent = `Error: ${error.message}`;
     }

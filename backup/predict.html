@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="predict.css">
+    <style>
+        fieldset {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Heart Disease Prediction Questionnaire</h1>
+    <p>Welcome! Please take a few moments to answer the following questions. Each one is designed to help assess your risk for heart disease. Detailed explanations are provided to assist you in giving accurate answers.</p>
+
+    <form id="predictionForm">
+        <fieldset>
+            <legend>Personal Information</legend>
+
+            <label for="name">Your Name:</label><br>
+            <input type="text" id="name" placeholder="Enter your full name" required><br><br>
+
+            <label for="ageCategory">Your Age Category:</label><br>
+            <p>Select the range that best represents your age.</p>
+            <select id="ageCategory" required>
+                <option value="0">18 to 24 years</option>
+                <option value="1">25 to 29 years</option>
+                <option value="2">30 to 34 years</option>
+                <option value="3">35 to 39 years</option>
+                <option value="4">40 to 44 years</option>
+                <option value="5">45 to 49 years</option>
+                <option value="6">50 to 54 years</option>
+                <option value="7">55 to 59 years</option>
+                <option value="8">60 to 64 years</option>
+                <option value="9">65 to 69 years</option>
+                <option value="10">70 to 74 years</option>
+                <option value="11">75 to 79 years</option>
+                <option value="12">80 years or older</option>
+            </select><br><br>
+
+            <label for="heightInMeters">Your Height (in meters):</label><br>
+            <p>Provide your height in meters. For example, 1.75 meters.</p>
+            <input type="number" id="heightInMeters" step="0.01" placeholder="Enter your height in meters" required><br><br>
+
+            <label for="weightInKilograms">Your Weight (in kilograms):</label><br>
+            <p>Provide your weight in kilograms for accurate BMI calculations. For example, 70.5 kg.</p>
+            <input type="number" id="weightInKilograms" step="0.1" placeholder="Enter your weight in kilograms" required><br><br>
+
+            <label for="bmi">Body Mass Index (BMI):</label><br>
+            <p>Enter your Body Mass Index (BMI). This is a measure of your weight in relation to your height. If unsure, you can calculate it by dividing your weight (kg) by the square of your height (m).</p>
+            <input type="number" id="bmi" step="0.1" placeholder="Enter your BMI" required><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Physical and General Health</legend>
+
+            <label for="generalHealth">How would you rate your general health?</label><br>
+            <p>Provide an overall assessment of your health, based on your own understanding and experiences.</p>
+            <select id="generalHealth" required>
+                <option value="0">Excellent</option>
+                <option value="4">Very Good</option>
+                <option value="2">Good</option>
+                <option value="1">Fair</option>
+                <option value="3">Poor</option>
+            </select><br><br>
+
+            <label for="mentalHealthDays">Number of poor mental health days in the past month:</label><br>
+            <p>Enter the number of days in the past 30 days when your mental health was not good.</p>
+            <input type="number" id="mentalHealthDays" min="0" max="30" required><br><br>
+
+            <label for="physicalHealthDays">Number of poor physical health days in the past month:</label><br>
+            <p>Enter the number of days in the past 30 days when your physical health was not good.</p>
+            <input type="number" id="physicalHealthDays" min="0" max="30" required><br><br>
+
+            <label for="sleepHours">Average sleep duration:</label><br>
+            <p>Enter the average number of hours you sleep per day. Aim for accuracy for the best prediction.</p>
+            <input type="number" id="sleepHours" min="0" max="24" placeholder="Enter average hours of sleep per day" required><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Medical History</legend>
+
+            <label for="hadArthritis">Have you been diagnosed with arthritis?</label><br>
+            <p>Arthritis refers to inflammation of the joints that may cause pain or stiffness.</p>
+            <select id="hadArthritis" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+
+            <label for="hadCOPD">Have you been diagnosed with COPD?</label><br>
+            <p>COPD, or Chronic Obstructive Pulmonary Disease, is a chronic lung condition that makes breathing difficult.</p>
+            <select id="hadCOPD" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+
+            <label for="hadDiabetes">Have you been diagnosed with diabetes?</label><br>
+            <p>Specify if you have diabetes, pre-diabetes, or diabetes that occurred during pregnancy.</p>
+            <select id="hadDiabetes" required>
+                <option value="0">No</option>
+                <option value="1">No, pre-diabetes or borderline diabetes</option>
+                <option value="2">Yes</option>
+                <option value="3">Yes, but only during pregnancy (female)</option>
+            </select><br><br>
+
+            <label for="hadKidneyDisease">Have you been diagnosed with kidney disease?</label><br>
+            <p>Indicate if you have been diagnosed with any chronic kidney conditions.</p>
+            <select id="hadKidneyDisease" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Physical Abilities</legend>
+
+            <label for="difficultyWalking">Do you have difficulty walking?</label><br>
+            <p>Indicate if you experience trouble walking even short distances or require assistance to move around.</p>
+            <select id="difficultyWalking" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+
+            <label for="difficultyDressingBathing">Do you have difficulty dressing or bathing?</label><br>
+            <p>This refers to challenges with daily personal care activities like putting on clothes or bathing independently.</p>
+            <select id="difficultyDressingBathing" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+
+            <label for="difficultyErrands">Do you find it difficult to run errands?</label><br>
+            <p>This could include challenges with shopping, visiting a doctor, or completing similar tasks independently.</p>
+            <select id="difficultyErrands" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+
+            <label for="blindOrVisionDifficulty">Do you have blindness or vision difficulties?</label><br>
+            <p>Indicate if you experience significant challenges with vision, even with corrective measures like glasses.</p>
+            <select id="blindOrVisionDifficulty" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+
+            <label for="deafOrHardOfHearing">Do you have hearing difficulties?</label><br>
+            <p>Indicate if you experience significant challenges hearing, even with the use of hearing aids.</p>
+            <select id="deafOrHardOfHearing" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Lifestyle Factors</legend>
+
+            <label for="smokerStatus">Smoking Status:</label><br>
+            <p>Provide details about your smoking habits, if applicable.</p>
+            <select id="smokerStatus" required>
+                <option value="0">Current smoker - now smokes every day</option>
+                <option value="1">Current smoker - now smokes some days</option>
+                <option value="2">Former smoker</option>
+                <option value="3">Never smoked</option>
+            </select><br><br>
+
+            <label for="pneumoVaxEver">Have you ever received the pneumococcal vaccine?</label><br>
+            <p>The pneumococcal vaccine protects against infections like pneumonia. Indicate if you've received it.</p>
+            <select id="pneumoVaxEver" required>
+                <option value="0">No</option>
+                <option value="1">Unknown</option>
+                <option value="2">Yes</option>
+            </select><br><br>
+
+            <label for="removedTeeth">Have you had any teeth removed?</label><br>
+            <p>Indicate if you have had one or more teeth removed, including for dental health reasons.</p>
+            <select id="removedTeeth" required>
+                <option value="0">1 to 5</option>
+                <option value="1">6 or more, but not all</option>
+                <option value="2">All</option>
+                <option value="3">None of them</option>
+            </select><br><br>
+
+            <label for="chestScan">Have you ever had a chest scan?</label><br>
+            <p>Specify if you've undergone any chest scans for medical reasons, or if no scans have been performed.</p>
+            <select id="chestScan" required>
+                <option value="0">No</option>
+                <option value="1">No Scan</option>
+                <option value="2">Yes</option>
+            </select><br><br>
+        </fieldset>
+
+        <button type="submit">Submit and Predict</button>
+    </form>
+
+    <div id="result" style="display: none;"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

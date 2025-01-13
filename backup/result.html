@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="predict.css">
+</head>
+<body>
+    <h1>Heart Disease Prediction Results</h1>
+    <div class="result-container">
+        <h2 id="result-name"></h2>
+        <div id="result-content"></div>
+    </div>
+
+    <button onclick="window.location.href='./index.html';">Back to Form</button>
+
+    <script>
+        // Extract results from query parameters
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        const heartAttack = params.get('heartAttack');
+        const angina = params.get('angina');
+        const stroke = params.get('stroke');
+
+        const getSuggestion = (probability) => {
+            if (probability < 30) {
+                return "Low risk. Maintain a healthy lifestyle and regular checkups.";
+            } else if (probability < 60) {
+                return "Medium risk. Consider lifestyle changes, like improving diet, regular exercise, and periodic medical checkups.";
+            } else {
+                return "High risk. Immediate medical attention is advised. Schedule a consultation with a healthcare provider.";
+            }
+        };
+
+        document.getElementById('result-name').textContent = `Results for ${name}`;
+        document.getElementById('result-content').innerHTML = `
+            <p><strong>Heart Attack Risk:</strong> ${heartAttack}<br>${getSuggestion(parseFloat(heartAttack))}</p>
+            <p><strong>Angina Risk:</strong> ${angina}<br>${getSuggestion(parseFloat(angina))}</p>
+            <p><strong>Stroke Risk:</strong> ${stroke}<br>${getSuggestion(parseFloat(stroke))}</p>
+        `;
+    </script>
+</body>
+</html>
