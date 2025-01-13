@@ -14,57 +14,6 @@
         <label for="name">Name:</label><br>
         <input type="text" id="name" placeholder="Enter your name" required><br><br>
 
-        <label for="sex">Sex:</label><br>
-        <select id="sex" required>
-            <option value="0">Male</option>
-            <option value="1">Female</option>
-        </select><br><br>
-
-        <label for="physicalHealthDays">Physical Health Days (0-30):</label><br>
-        <input type="number" id="physicalHealthDays" min="0" max="30" required><br><br>
-
-        <label for="removedTeeth">Removed Teeth:</label><br>
-        <select id="removedTeeth" required>
-            <option value="0">None of them</option>
-            <option value="1">6 or more, but not all</option>
-            <option value="2">1 to 5</option>
-            <option value="3">All</option>
-        </select><br><br>
-
-        <label for="hadArthritis">Had Arthritis:</label><br>
-        <select id="hadArthritis" required>
-            <option value="0">True</option>
-            <option value="1">False</option>
-        </select><br><br>
-
-        <label for="hadDiabetes">Had Diabetes:</label><br>
-        <select id="hadDiabetes" required>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-            <option value="2">Yes, but only during pregnancy (female)</option>
-            <option value="3">No, pre-diabetes or borderline diabetes</option>
-        </select><br><br>
-
-        <label for="difficultyWalking">Difficulty Walking:</label><br>
-        <select id="difficultyWalking" required>
-            <option value="0">True</option>
-            <option value="1">False</option>
-        </select><br><br>
-
-        <label for="smokerStatus">Smoker Status:</label><br>
-        <select id="smokerStatus" required>
-            <option value="0">Former smoker</option>
-            <option value="1">Never smoked</option>
-            <option value="2">Current smoker - now smokes every day</option>
-            <option value="3">Current smoker - now smokes some days</option>
-        </select><br><br>
-
-        <label for="chestScan">Chest Scan:</label><br>
-        <select id="chestScan" required>
-            <option value="0">True</option>
-            <option value="1">False</option>
-        </select><br><br>
-
         <label for="ageCategory">Age Category:</label><br>
         <select id="ageCategory" required>
             <option value="0">Age 18 to 24</option>
@@ -82,11 +31,118 @@
             <option value="12">Age 80 or older</option>
         </select><br><br>
 
+        <label for="bmi">BMI:</label><br>
+        <input type="number" id="bmi" step="0.1" placeholder="Enter your BMI" required><br><br>
+
+        <label for="blindOrVisionDifficulty">Blind or Vision Difficulty:</label><br>
+        <select id="blindOrVisionDifficulty" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="chestScan">Chest Scan:</label><br>
+        <select id="chestScan" required>
+            <option value="0">No</option>
+            <option value="1">No Scan</option>
+            <option value="2">Yes</option>
+        </select><br><br>
+
+        <label for="deafOrHardOfHearing">Deaf or Hard of Hearing:</label><br>
+        <select id="deafOrHardOfHearing" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="difficultyDressingBathing">Difficulty Dressing or Bathing:</label><br>
+        <select id="difficultyDressingBathing" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="difficultyErrands">Difficulty Running Errands:</label><br>
+        <select id="difficultyErrands" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="difficultyWalking">Difficulty Walking:</label><br>
+        <select id="difficultyWalking" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="generalHealth">General Health:</label><br>
+        <select id="generalHealth" required>
+            <option value="0">Excellent</option>
+            <option value="4">Very Good</option>
+            <option value="2">Good</option>
+            <option value="1">Fair</option>
+            <option value="3">Poor</option>
+        </select><br><br>
+
+        <label for="hadArthritis">Had Arthritis:</label><br>
+        <select id="hadArthritis" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="hadCOPD">Had COPD:</label><br>
+        <select id="hadCOPD" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="hadDiabetes">Had Diabetes:</label><br>
+        <select id="hadDiabetes" required>
+            <option value="0">No</option>
+            <option value="1">No, pre-diabetes or borderline diabetes</option>
+            <option value="2">Yes</option>
+            <option value="3">Yes, but only during pregnancy (female)</option>
+        </select><br><br>
+
+        <label for="hadKidneyDisease">Had Kidney Disease:</label><br>
+        <select id="hadKidneyDisease" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="heightInMeters">Height (in meters):</label><br>
+        <input type="number" id="heightInMeters" step="0.01" placeholder="Enter your height in meters" required><br><br>
+
+        <label for="mentalHealthDays">Mental Health Days (0-30):</label><br>
+        <input type="number" id="mentalHealthDays" min="0" max="30" required><br><br>
+
+        <label for="physicalHealthDays">Physical Health Days (0-30):</label><br>
+        <input type="number" id="physicalHealthDays" min="0" max="30" required><br><br>
+
         <label for="pneumoVaxEver">PneumoVax Ever:</label><br>
         <select id="pneumoVaxEver" required>
-            <option value="0">True</option>
-            <option value="1">False</option>
+            <option value="0">No</option>
+            <option value="1">Unknown</option>
+            <option value="2">Yes</option>
         </select><br><br>
+
+        <label for="removedTeeth">Removed Teeth:</label><br>
+        <select id="removedTeeth" required>
+            <option value="0">1 to 5</option>
+            <option value="1">6 or more, but not all</option>
+            <option value="2">All</option>
+            <option value="3">None of them</option>
+        </select><br><br>
+
+        <label for="sleepHours">Sleep Hours:</label><br>
+        <input type="number" id="sleepHours" min="0" max="24" placeholder="Enter average hours of sleep per day" required><br><br>
+
+        <label for="smokerStatus">Smoker Status:</label><br>
+        <select id="smokerStatus" required>
+            <option value="0">Current smoker - now smokes every day</option>
+            <option value="1">Current smoker - now smokes some days</option>
+            <option value="2">Former smoker</option>
+            <option value="3">Never smoked</option>
+        </select><br><br>
+
+        <label for="weightInKilograms">Weight (in kilograms):</label><br>
+        <input type="number" id="weightInKilograms" step="0.1" placeholder="Enter your weight in kilograms" required><br><br>
 
         <button type="submit">Predict</button>
     </form>

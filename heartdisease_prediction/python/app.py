@@ -13,10 +13,10 @@ with open('../models/angina_scaler.pkl', 'rb') as f:
 with open('../models/angina_model.pkl', 'rb') as f:
     angina_model = pickle.load(f)
 
-with open('../models/heartattack_scaler.pkl', 'rb') as f:
+with open('../models/heart_attack_scaler.pkl', 'rb') as f:
     heartattack_scaler = pickle.load(f)
 
-with open('../models/heartattack_model.pkl', 'rb') as f:
+with open('../models/heart_attack_model.pkl', 'rb') as f:
     heartattack_model = pickle.load(f)
 
 with open('../models/stroke_scaler.pkl', 'rb') as f:
