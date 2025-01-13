@@ -25,11 +25,20 @@ with open('models/stroke_scaler.pkl', 'rb') as f:
 with open('models/stroke_model.pkl', 'rb') as f:
     stroke_model = pickle.load(f)
 
+# Without
+with open('models/heart_attack_model_without.pkl', 'rb') as f:
+    heartattack_model_without = pickle.load(f)
+
+with open('models/stroke_model_without.pkl', 'rb') as f:
+    stroke_model_without = pickle.load(f)
+
 # Map models and scalers to their respective endpoints
 models = {
     'angina': (angina_model, angina_scaler),
     'heartattack': (heartattack_model, heartattack_scaler),
-    'stroke': (stroke_model, stroke_scaler)
+    'stroke': (stroke_model, stroke_scaler),
+    'heartattack-without': (heartattack_model_without, heartattack_scaler),
+    'stroke-without': (stroke_model_without, stroke_scaler)
 }
 
 @app.route('/predict/<model_type>', methods=['POST'])

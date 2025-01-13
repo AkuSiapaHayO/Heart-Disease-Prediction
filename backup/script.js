@@ -70,51 +70,97 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
                     fullInputData.weightInKilograms
                 ];
             } else if (disease === 'stroke') {
-                currentInput = [
-                    fullInputData.ageCategory,          
-                    fullInputData.bmi,              
-                    fullInputData.blindOrVisionDifficulty,
-                    fullInputData.chestScan,             
-                    fullInputData.difficultyDressingBathing,
-                    fullInputData.difficultyErrands,      
-                    fullInputData.difficultyWalking, 
-                    fullInputData.generalHealth,
-                    prevPrediction.angina, 
-                    fullInputData.hadArthritis, 
-                    fullInputData.hadCOPD, 
-                    fullInputData.hadDiabetes,
-                    fullInputData.heightInMeters, 
-                    fullInputData.mentalHealthDays,
-                    fullInputData.physicalHealthDays, 
-                    fullInputData.removedTeeth,   
-                    fullInputData.sleepHours,    
-                    fullInputData.smokerStatus,     
-                    fullInputData.weightInKilograms     
-                ];
+                if (prevPrediction.angina == -1) {
+                    currentInput = [
+                        fullInputData.ageCategory,
+                        fullInputData.bmi,
+                        fullInputData.blindOrVisionDifficulty,
+                        fullInputData.chestScan,
+                        fullInputData.difficultyDressingBathing,
+                        fullInputData.difficultyErrands,
+                        fullInputData.difficultyWalking,
+                        fullInputData.generalHealth,
+                        fullInputData.hadArthritis,
+                        fullInputData.hadCOPD,
+                        fullInputData.hadDiabetes,
+                        fullInputData.heightInMeters,
+                        fullInputData.mentalHealthDays,
+                        fullInputData.physicalHealthDays,
+                        fullInputData.removedTeeth,
+                        fullInputData.sleepHours,
+                        fullInputData.smokerStatus,
+                        fullInputData.weightInKilograms
+                    ];
+                } else {
+                    currentInput = [
+                        fullInputData.ageCategory,
+                        fullInputData.bmi,
+                        fullInputData.blindOrVisionDifficulty,
+                        fullInputData.chestScan,
+                        fullInputData.difficultyDressingBathing,
+                        fullInputData.difficultyErrands,
+                        fullInputData.difficultyWalking,
+                        fullInputData.generalHealth,
+                        prevPrediction.angina,
+                        fullInputData.hadArthritis,
+                        fullInputData.hadCOPD,
+                        fullInputData.hadDiabetes,
+                        fullInputData.heightInMeters,
+                        fullInputData.mentalHealthDays,
+                        fullInputData.physicalHealthDays,
+                        fullInputData.removedTeeth,
+                        fullInputData.sleepHours,
+                        fullInputData.smokerStatus,
+                        fullInputData.weightInKilograms
+                    ];
+                }
                 // currentInput = [1, 0, 0, 12, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1.2, 1, 1, 1, 1, 2]
             } else if (disease === 'heartAttack') {
-                currentInput = [
-                    fullInputData.ageCategory,
-                    fullInputData.bmi,
-                    fullInputData.chestScan,
-                    fullInputData.deafOrHardOfHearing,
-                    fullInputData.difficultyWalking,
-                    fullInputData.generalHealth,
-                    prevPrediction.angina,
-                    fullInputData.hadArthritis,
-                    fullInputData.hadCOPD,
-                    fullInputData.hadDiabetes,
-                    fullInputData.hadKidneyDisease,
-                    prevPrediction.stroke,
-                    fullInputData.heightInMeters,
-                    fullInputData.mentalHealthDays,
-                    fullInputData.physicalHealthDays,
-                    fullInputData.pneumoVaxEver,
-                    fullInputData.removedTeeth,
-                    fullInputData.sleepHours,
-                    fullInputData.smokerStatus,
-                    fullInputData.weightInKilograms
-                ];                
+                if (prevPrediction.stroke == -1) {
+                    currentInput = [
+                        fullInputData.ageCategory,
+                        fullInputData.bmi,
+                        fullInputData.chestScan,
+                        fullInputData.deafOrHardOfHearing,
+                        fullInputData.difficultyWalking,
+                        fullInputData.generalHealth,
+                        fullInputData.hadArthritis,
+                        fullInputData.hadCOPD,
+                        fullInputData.hadDiabetes,
+                        fullInputData.hadKidneyDisease,
+                        fullInputData.heightInMeters,
+                        fullInputData.mentalHealthDays,
+                        fullInputData.physicalHealthDays,
+                        fullInputData.pneumoVaxEver,
+                        fullInputData.removedTeeth,
+                        fullInputData.sleepHours,
+                        fullInputData.smokerStatus,
+                        fullInputData.weightInKilograms
+                    ];
+                } else {
+                    currentInput = [
+                        fullInputData.ageCategory,
+                        fullInputData.bmi,
+                        fullInputData.chestScan,
+                        fullInputData.deafOrHardOfHearing,
+                        fullInputData.difficultyWalking,
+                        fullInputData.generalHealth,
+                        prevPrediction.angina,
+                        fullInputData.hadArthritis,
+                        fullInputData.hadCOPD,
+                        fullInputData.hadDiabetes,
+                        fullInputData.hadKidneyDisease,
+                        prevPrediction.stroke,
+                        fullInputData.heightInMeters,
+                        fullInputData.mentalHealthDays,
+                        fullInputData.physicalHealthDays,
+                        fullInputData.pneumoVaxEver,
+                        fullInputData.removedTeeth,
+                        fullInputData.sleepHours,
+                        fullInputData.smokerStatus,
+                        fullInputData.weightInKilograms
+                    ];
+                }
             }
 
             // Fetch prediction
@@ -150,9 +196,33 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
                 prevPrediction.stroke = probability > 50 ? 1 : 0;
             }
 
+            if (disease === 'angina') {
+                if (probability > 65) {
+                    prevPrediction.angina = 1;
+                } else if (probability < 35) {
+                    prevPrediction.angina = 0;
+                } else {
+                    endpoints.stroke = 'http://127.0.0.1:5000/predict/stroke-without';
+                    endpoints.heartAttack = 'http://127.0.0.1:5000/predict/heartattack-without';
+                    prevPrediction.angina = -1;
+                    prevPrediction.stroke = -1;
+                }
+            } else if (disease === 'stroke') {
+                if (prevPrediction.angina != -1) {
+                    if (probability > 65) {
+                        prevPrediction.stroke = 1;
+                    } else if (probability < 35) {
+                        prevPrediction.stroke = 0;
+                    } else {
+                        endpoints.heartAttack = 'http://127.0.0.1:5000/predict/heartattack-without';
+                        prevPrediction.stroke = 1;
+                    }
+                }
+            }
+
+
         }
 
-        // Redirect to results page
         const queryString = new URLSearchParams({
             name: fullInputData.name,
             heartAttack: results.heartAttack,
